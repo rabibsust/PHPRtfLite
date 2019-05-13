@@ -29,7 +29,7 @@
  * @package     PHPRtfLite
  * @subpackage  PHPRtfLite_Table
  */
-class PHPRtfLite_Table implements PHPRtfLite_Freeable
+class PHPRtfLite_Table
 {
 
     /**
@@ -47,13 +47,13 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
 
     /**
      * array of PHPRtfLite_Table_Row instances
-     * @var PHPRtfLite_Table_Row[]
+     * @var array
      */
     protected $_rows;
 
     /**
      * array of PHPRtfLite_Table_Column instances
-     * @var PHPRtfLite_Table_Column[]
+     * @var array
      */
     protected $_columns;
 
@@ -104,23 +104,14 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
     /**
      * constructor
      *
-     * @param PHPRtfLite_Container_Base $container
-     * @param string                    $alignment
-     * @param int                       $nestDepth
+     * @param PHPRtfLite_Container
+     * @param string
      */
     public function __construct(PHPRtfLite_Container_Base $container, $alignment = self::ALIGN_LEFT, $nestDepth = 1)
     {
         $this->_container = $container;
         $this->_alignment = $alignment;
         $this->_nestDepth = $nestDepth;
-    }
-
-
-    public function free()
-    {
-        foreach ($this->_rows as $row) {
-            $row->free();
-        }
     }
 
 
@@ -247,7 +238,7 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      */
     public function preventEmptyParagraph($value = true)
     {
-        $this->_preventEmptyParagraph = $value;
+    	$this->_preventEmptyParagraph = $value;
     }
 
 
@@ -256,10 +247,10 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      *
      * @return boolean
      */
-    public function getPreventEmptyParagraph()
+	public function getPreventEmptyParagraph()
     {
-        return $this->_preventEmptyParagraph;
-    }
+		return $this->_preventEmptyParagraph;
+	}
 
 
     /**
@@ -412,7 +403,7 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
                                 $convertTagsToRtf = true)
     {
         $cell = $this->getCell($rowIndex, $columnIndex);
-        if ($font === null) {
+        if (is_null($font)) {
             $font = $cell->getFont();
         }
         return $cell->writeText($text, $font, $parFormat, $convertTagsToRtf);
@@ -430,14 +421,13 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      * @param   float                   $height         if null image is displayed by it's original width. If boths parameters are null, image is displayed as it is.
      * @return  PHPRtfLite_Image
      */
-    public function addImageToCell(
-        $rowIndex,
-        $columnIndex,
-        $file,
-        PHPRtfLite_ParFormat $parFormat = null,
-        $width = null,
-        $height = null
-    ) {
+    public function addImageToCell($rowIndex,
+                                   $columnIndex,
+                                   $file,
+                                   PHPRtfLite_ParFormat $parFormat = null,
+                                   $width = null,
+                                   $height = null)
+    {
         $cell = $this->getCell($rowIndex, $columnIndex);
         return $cell->addImage($file, $parFormat, $width, $height);
     }
@@ -446,26 +436,25 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
     /**
      * adds image to cell
      *
-     * @param  integer              $rowIndex       row index of cell
-     * @param  integer              $columnIndex    column index of cell
-     * @param  string               $imageString    image source code
-     * @param  string               $type           image type (GD, WMF)
-     * @param  PHPRtfLite_ParFormat $parFormat      paragraph format
-     * @param  float                $width          if null image is displayed by it's original height.
-     * @param  float                $height         if null image is displayed by it's original width. If boths parameters are null, image is displayed as it is.
-     * @return PHPRtfLite_Image
+     * @param   integer                 $rowIndex       row index of cell
+     * @param   integer                 $columnIndex    column index of cell
+     * @param   string                  $file           image file.
+     * @param   PHPRtfLite_ParFormat    $parFormat      paragraph format
+     * @param   float                   $width          if null image is displayed by it's original height.
+     * @param   float                   $height         if null image is displayed by it's original width. If boths parameters are null, image is displayed as it is.
+     * @return  PHPRtfLite_Image
      */
     public function addImageFromStringToCell(
-        $rowIndex,
-        $columnIndex,
-        $imageString,
-        $type,
-        PHPRtfLite_ParFormat $parFormat = null,
-        $width = null,
-        $height = null
-    ) {
+                            $rowIndex,
+                            $columnIndex,
+                            $string,
+                            $type,
+                            PHPRtfLite_ParFormat $parFormat = null,
+                            $width = null,
+                            $height = null)
+    {
         $cell = $this->getCell($rowIndex, $columnIndex);
-        return $cell->addImageFromString($imageString, $type, $parFormat, $width, $height);
+        return $cell->addImageFromString($string, $type, $parFormat, $width, $height);
     }
 
 
@@ -535,13 +524,8 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      * @param   integer $endRow         end row, if null, then vertical alignment is set only to the row range.
      * @param   integer $endColumn      end column, if null, then vertical alignment is set just to the column range.
      */
-    public function setVerticalAlignmentForCellRange(
-        $verticalAlignment,
-        $startRow,
-        $startColumn,
-        $endRow = null,
-        $endColumn = null
-    ) {
+    public function setVerticalAlignmentForCellRange($verticalAlignment, $startRow, $startColumn, $endRow = null, $endColumn = null)
+    {
         list($startRow, $startColumn, $endRow, $endColumn)
                 = PHPRtfLite_Table::getValidCellRange($startRow, $startColumn, $endRow, $endColumn);
 
@@ -649,13 +633,12 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      * @param   integer $endRow             end row, if null, then rotation is set only to the row range.
      * @param   integer $endColumn          end column, if null, then rotation is set just to the column range.
      */
-    public function setBackgroundForCellRange(
-        $backgroundColor,
-        $startRow,
-        $startColumn,
-        $endRow = null,
-        $endColumn = null
-    ) {
+    public function setBackgroundForCellRange($backgroundColor,
+                                              $startRow,
+                                              $startColumn,
+                                              $endRow = null,
+                                              $endColumn = null)
+    {
         list($startRow, $startColumn, $endRow, $endColumn)
                 = PHPRtfLite_Table::getValidCellRange($startRow, $startColumn, $endRow, $endColumn);
 
@@ -679,13 +662,10 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      * @param   integer             $endRow         end row, if null, then border is set only to the row range.
      * @param   integer             $endColumn      end column, if null, then border is set just to the column range.
      */
-    public function setBorderForCellRange(
-        PHPRtfLite_Border $border,
-        $startRow,
-        $startColumn,
-        $endRow = null,
-        $endColumn = null
-    ) {
+    public function setBorderForCellRange(PHPRtfLite_Border $border,
+                                          $startRow, $startColumn,
+                                          $endRow = null, $endColumn = null)
+    {
         list($startRow, $startColumn, $endRow, $endColumn)
                 = PHPRtfLite_Table::getValidCellRange($startRow, $startColumn, $endRow, $endColumn);
 
@@ -716,17 +696,16 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      * @param   boolean                     $right          if false, right border is not set (default true)
      * @param   boolean                     $bottom         if false, bottom border is not set (default true)
      */
-    public function setBordersForCellRange(
-        PHPRtfLite_Border_Format $borderFormat,
-        $startRow,
-        $startColumn,
-        $endRow = null,
-        $endColumn = null,
-        $left = true,
-        $top = true,
-        $right = true,
-        $bottom = true
-    ) {
+    public function setBordersForCellRange(PHPRtfLite_Border_Format $borderFormat,
+                                           $startRow,
+                                           $startColumn,
+                                           $endRow = null,
+                                           $endColumn = null,
+                                           $left = true,
+                                           $top = true,
+                                           $right = true,
+                                           $bottom = true)
+    {
         $border = new PHPRtfLite_Border($this->getRtf());
         $border->setBorders($borderFormat, $left, $top, $right, $bottom);
 
@@ -799,7 +778,7 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
     /**
      * gets table rows
      *
-     * @return PHPRtfLite_Table_Row[]
+     * @return array instances of PHPRtfLite_Table_Row
      */
     public function getRows()
     {
@@ -814,14 +793,14 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      */
     public function getRowsCount()
     {
-        return count($this->_rows);
+        return count((array) $this->_rows);
     }
 
 
     /**
      * gets table columns
      *
-     * @return PHPRtfLite_Table_Column[]
+     * @return array instances of PHPRtfLite_Table_Column
      */
     public function getColumns()
     {
@@ -836,7 +815,7 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
      */
     public function getColumnsCount()
     {
-        return count($this->_columns);
+        return count((array) $this->_columns);
     }
 
 
@@ -890,7 +869,6 @@ class PHPRtfLite_Table implements PHPRtfLite_Freeable
 
         $stream = $this->getRtf()->getWriter();
         $stream->write('\pard');
-
         foreach ($this->_rows as $row) {
             $this->renderRowDefinition($row);
             $stream->write("\r\n");
