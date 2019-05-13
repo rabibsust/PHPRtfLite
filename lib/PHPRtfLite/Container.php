@@ -156,4 +156,49 @@ abstract class PHPRtfLite_Container extends PHPRtfLite_Container_Base
         $this->addEmptyParagraph($font, $parFormat);
     }
 
+    /**
+     * Writes a bookmark to container
+     * @param string $bookmark Bookmark name. Support only alphanuméric and underscore scre characters.
+     * @param string $text Bookmark text If false, bookmark is writen in previous paragraph format.
+     * @param Font $font Font
+     * @param mix $parFormat Paragraph format or null object. If null object hyperlink is written in the same paragraph.
+     * @access public
+     */
+    public function writeBookmark($bookmark, $text, PHPRtfLite_Font $font, PHPRtfLite_ParFormat $parFormat, $convertTagsToRtf = true)
+    { 
+            $element = new PHPRtfLite_Element_Bookmark($this->_rtf, $text, $font, $parFormat);
+            $element->setBookmark($bookmark);
+            if ($convertTagsToRtf) {
+                $element->setConvertTagsToRtf();
+            }
+            $this->_elements[] = $element;
+
+            return $element;
+    }
+
+    /**
+     * Writes a toc to container
+     * @param string $bookmark Bookmark name. Support only alphanuméric and underscore scre characters.
+     * @param string $text Bookmark text If false, bookmark is writen in previous paragraph format.
+     * @param Font $font Font
+     * @param mix $parFormat Paragraph format or null object. If null object hyperlink is written in the same paragraph.
+     * @access public
+     */
+    public function writeToc($entry, $level , PHPRtfLite_Font $font, PHPRtfLite_ParFormat $parFormat, $convertTagsToRtf = true)
+    {
+        $this->writeRtfCode( '\tc \tcl'. $level . ' ' . $entry, $font, $parFormat);
+    }
+
+    /**
+     * Writes a generate toc to container
+     * @param string $bookmark Bookmark name. Support only alphanuméric and underscore scre characters.
+     * @param string $text Bookmark text If false, bookmark is writen in previous paragraph format.
+     * @param Font $font Font
+     * @param mix $parFormat Paragraph format or null object. If null object hyperlink is written in the same paragraph.
+     * @access public
+     */
+    public function generateToc(PHPRtfLite_Font $font, PHPRtfLite_ParFormat $parFormat)
+    {
+        $this->writeRtfCode( '\field{\*\fldinst {\\\TOC \\\f \\\h}}', $font, $parFormat);
+    }
 }
