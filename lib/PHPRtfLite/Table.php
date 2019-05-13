@@ -721,7 +721,7 @@ class PHPRtfLite_Table
      * @param   integer $endRow         end row
      * @param   integer $endColumn      end column
      *
-     * @TODO add source code comments
+     * @TODO source code commentation
      */
     public function mergeCellRange($startRow, $startColumn, $endRow, $endColumn)
     {
@@ -868,7 +868,7 @@ class PHPRtfLite_Table
         }
 
         $stream = $this->getRtf()->getWriter();
-        $stream->write('\pard');
+
         foreach ($this->_rows as $row) {
             $this->renderRowDefinition($row);
             $stream->write("\r\n");

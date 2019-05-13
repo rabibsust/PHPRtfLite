@@ -1,9 +1,9 @@
 <?php
 /*
     PHPRtfLite
-    Copyright 2010-2012 Steffen Zeidler <sigma_z@sigma-scripts.de>
+    Copyright 2019-2020  Ahmad Jamaly Rabib <rabib.sust@gmail.com>
 
-    This file is part of PHPRtfLite.
+    This file is added seperately with PHPRtfLite.
 
     PHPRtfLite is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -20,35 +20,53 @@
 */
 
 /**
- * class for text form fields in rtf documents.
+ * class for creating elements used in containers like sections, footers and headers.
  * @version     1.2
- * @author      Steffen Zeidler <sigma_z@sigma-scripts.de>
- * @copyright   2010-2012 Steffen Zeidler
+ * @author      Ahmad Jamaly Rabib <rabib.sust@gmail.com>
+ * @copyright   2019-2020 Ahmad Jamaly Rabib
  * @package     PHPRtfLite
- * @subpackage  PHPRtfLite_FormField
+ * @subpackage  PHPRtfLite_Element
  */
-class PHPRtfLite_FormField_Text extends PHPRtfLite_FormField
+class PHPRtfLite_Element_Toc extends PHPRtfLite_Element
 {
 
     /**
-     * gets form field type
-     *
-     * @return string
+     * @var string
      */
-    protected function getType()
+    protected $_toc = '';
+
+
+    /**
+     * sets toc
+     *
+     * @param string $toc
+     */
+    public function setToc($toc)
     {
-        return 'FORMTEXT';
+        $this->_toc = $toc;
     }
 
 
     /**
-     * gets rtf code for form field text
+     * gets opening token
      *
      * @return string
      */
-    public function getRtfCode()
+    protected function getOpeningToken()
     {
-        return '{\fftype0\fftypetxt0{\*\ffname Text1}}';
+        $toc = PHPRtfLite::quoteRtfCode($this->_toc);
+        return '{\tc\fs0\cf4 ' . $toc . '';
+    }
+
+
+    /**
+     * gets closing token
+     *
+     * @return string
+     */
+    protected function getClosingToken()
+    {
+        return '}';
     }
 
 }

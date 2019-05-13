@@ -77,7 +77,7 @@ class PHPRtfLite_FormField_Checkbox extends PHPRtfLite_FormField
     /**
      * sets size of checkbox
      *
-     * @param   integer $size
+     * @param   integer s$size
      */
     public function setSize($size)
     {

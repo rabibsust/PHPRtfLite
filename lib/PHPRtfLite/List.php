@@ -88,12 +88,9 @@ abstract class PHPRtfLite_List
      * @param   PHPRtfLite_Font         $font
      * @param   PHPRtfLite_ParFormat    $parFormat
      */
-    public function __construct(
-        PHPRtfLite $rtf,
-        $type = null,
-        PHPRtfLite_Font $font = null,
-        PHPRtfLite_ParFormat $parFormat = null
-    ) {
+    public function __construct(PHPRtfLite $rtf, $type = null,
+                                PHPRtfLite_Font $font = null, PHPRtfLite_ParFormat $parFormat = null)
+    {
         $this->_rtf         = $rtf;
         $this->_type        = $type;
         $this->_font        = $font;
@@ -108,13 +105,13 @@ abstract class PHPRtfLite_List
      * @param   PHPRtfLite_Font         $font
      * @param   PHPRtfLite_ParFormat    $parFormat
      * @param   boolean                 $convertTagsToRtf
-     * @return  $this
+     * @return  PHPRtfLite_List
      */
     public function addItem($text,
-        PHPRtfLite_Font $font = null,
-        PHPRtfLite_ParFormat $parFormat = null,
-        $convertTagsToRtf = true
-    ) {
+            PHPRtfLite_Font $font = null,
+            PHPRtfLite_ParFormat $parFormat = null,
+            $convertTagsToRtf = true)
+    {
         if ($font === null) {
             $font = $this->_font;
         }
@@ -148,8 +145,8 @@ abstract class PHPRtfLite_List
     /**
      * adds list to list
      *
-     * @param   PHPRtfLite_List  $list
-     * @return  $this
+     * @param   PHPRtfLite_List  $element
+     * @return  PHPRtfLite_List
      */
     public function addList(PHPRtfLite_List $list)
     {
@@ -224,7 +221,7 @@ abstract class PHPRtfLite_List
 
         foreach ($this->_items as $item) {
             // item is a list
-            if ($item instanceof PHPRtfLite_List_Numbering) {
+            if ($item instanceof PHPRtfLite_List) {
                 if ($this instanceof PHPRtfLite_List_Numbering) {
                     $item->setPrefix($this->_prefix . $this->getNumber($number) . $this->_separator);
                     $item->setSuffix($this->_suffix);
