@@ -9,6 +9,9 @@ Project links
 
 Features
 ---
+* Table of Contents
+* Auto Table of content generation
+* Bookmarks
 * Paragraphs
 * Sections
 * Fonts
